@@ -13,6 +13,41 @@ $ docker build -t friendlyhello . // building image from current directory
 
 #Docker run commands
 Docker run -p 4000:80 friendlyhello
+Docker run -p 4000:80 --restart on-failure friendlyhello //--restart on failure (when container got crash)
+Docker run -p 4000:80 -d friendlyhello // -d (run in backround)
+Docker run -p --rm 4000:80 friendlyhello //--rm(remove automatically when container stop)
+Docker run -p --rm --name mycontainer 4000:80 friendlyhello //--name(name of the container)
+
+#Docker volume (live code change)
+Docker run -p 4000:80 -v $PWD:/app friendlyhello // -v (local volume (volumename or directory) mounted to container)
+
+#Log in to the container
+docker container exec -it container_name bash/sh
+
+#Executing command into the container without login into containers
+docker exec -it container_name  commands (touch hi.txt)
+
+#Linking container together (we can ping using container name once linked containers)
+docker network ls
+docker network create --driver bridge myfirstnetwork
+Docker run -p 4000:80 --net myfirstnetwork friendlyhello // --net (map own network)
+
+# Data volume and  of to persist data even we stop the container
+docker volume create  volume_name
+
+#Sharing data between containers. add in the docker file
+VOLUME ["/app/public"]  // this volume is now exposed and used by other container
+Docker run -p 4000:80 -v /app/public --net myfirstnetwork myweb1 // exposing /app/public directory of the container
+Docker run -p 4000:80 --volumes-from myweb1 friendlyhello
+
+#Docker container commands
+$ docker container stop/run/ls/logs/stats
+
+#Docker logs commands
+$ docker container logs -f friendlyhello // -f (realtime tail)
+
+#Docker monitoring commands
+$ docker container stats
 
 #Checking the running app in cmd
 $ curl http://localhost:4000
