@@ -1,0 +1,15 @@
+Some important note:
+  - in distributed application different pieces of the app is call service
+  - services are just containers in production. one service one image
+  - we can scale up and down or apps (replica, computer resources)
+
+Docker development best practice:
+  -How to keep images small
+    > start with base images
+    > can use multistage builds (means does not include all libraries and dependencies)
+    > Minimize the number of RUN command to reduce the number of layers
+    > If you have multiple images with a lot in common, consider creating your
+      own base image with the shared components, and basing your unique images on
+      that. Docker only needs to load the common layers once
+    > Image layer : is read only
+    > Container layer : is read and writeable
